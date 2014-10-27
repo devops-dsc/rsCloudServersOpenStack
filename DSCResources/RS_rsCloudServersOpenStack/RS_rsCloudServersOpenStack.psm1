@@ -333,12 +333,12 @@ Function Set-TargetResource
                catch {
                   Write-EventLog -LogName DevOps -Source RS_rsCloudServersOpenStack -EntryType Error -EventId 1002 -Message "Failed to create temporary monitoring token `n $($_.Exception.Message)"
                }
-               powershell.exe $($d.wD, $d.mR, $($environmentName + ".ps1") -join '\') -Node $missingServer -ObjectGuid $createServer.server.id -MonitoringID $createServer.server.id -MonitoringToken $tempToken
+               Invoke-Expression "$($d.wD, $d.mR, $($environmentName + '.ps1') -join '\') -Node $missingServer -ObjectGuid $($createServer.server.id) -MonitoringID $($createServer.server.id) -MonitoringToken $tempToken"
                
                Write-EventLog -LogName DevOps -Source RS_rsCloudServersOpenStack -EntryType Information -EventId 1000 -Message "Creating MOF file for server $missingServer"
             }
             catch {
-               Write-EventLog -LogName DevOps -Source RS_rsCloudServersOpenStack -EntryType Error -EventId 1002 -Message "Failed to create MOF file for server $missingServer with Guid $createServer.server.id `n $($_.Exception.Message)"
+               Write-EventLog -LogName DevOps -Source RS_rsCloudServersOpenStack -EntryType Error -EventId 1002 -Message "Failed to create MOF file for server $missingServer with Guid $($createServer.server.id) `n $($_.Exception.Message)"
             }
             Write-Verbose $body
             if($newServerInfo.serverName -contains $missingServer) {
